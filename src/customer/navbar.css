@@ -1,0 +1,57 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 28, 2018, 1:19:13 AM
+    Author     : MYousry
+*/
+.root{
+    
+    -fx-background-color : #eceae2;
+    
+    
+}
+
+.rectangle {
+    
+    -fx-border-color:  #37aff7 ;
+    -fx-border-color: wheat ;
+ 
+    
+}
+    #fancytext {
+    -fx-font: 50px Tahoma;
+    
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
+#menu{
+     -fx-font: 25px Thonburi;
+     -fx-stroke: black;
+     
+    
+}
+
+#profilebar
+{
+    -fx-background-color :#322b2b;
+    -fx-border-width: 2px 5px 0px 0px ;
+    -fx-border-color: black;
+    -fx-opacity: 0.8;
+    
+}
+#profilepic{
+    -fx-border:10px solid red;
+    -fx-border-radius: 500px;
+    -fx-webkit-border-radius: 500px;
+    -fx-moz-border-radius: 500px;
+}
+
+#username{
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #fffff;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
