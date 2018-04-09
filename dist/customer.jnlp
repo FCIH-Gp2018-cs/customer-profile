@@ -11,7 +11,7 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="customer.jar" size="1431529" download="eager" />
+    <jar href="customer.jar" size="1500452" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="customer" >
     <param name="requiredFXVersion" value="2.2+"/>

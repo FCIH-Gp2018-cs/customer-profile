@@ -5,6 +5,7 @@
  */
 package customer;
 
+import javafx.geometry.Insets;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.application.Application;
@@ -20,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -38,6 +40,11 @@ public class Customer extends Application {
 
     public Pane root = new Pane();
     public Rectangle homeshadow = new Rectangle();
+    public Text viewresults;
+    public Rectangle videoshadow;
+    public Image seeresult;
+    public ImageView play;
+    public ImageView videoview;
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -51,6 +58,9 @@ public class Customer extends Application {
         FileInputStream emailpic = new FileInputStream("F:\\gp\\customer\\src\\img\\email.png");
         FileInputStream phonepic = new FileInputStream("F:\\gp\\customer\\src\\img\\phone.png");
         FileInputStream detailspic = new FileInputStream("F:\\gp\\customer\\src\\img\\details.png");
+        FileInputStream pepsi = new FileInputStream("F:\\gp\\customer\\src\\img\\pepsi.jpg");
+        FileInputStream playimage = new FileInputStream("F:\\gp\\customer\\src\\img\\play.png");
+
         Rectangle rectangle = new Rectangle();
 
         //bar
@@ -286,14 +296,118 @@ public class Customer extends Application {
 
         root.getChildren().addAll(profilebar, profilepicview, username, email, phone, Description, emailview, phoneview, detailsview);
         /////////////////////////////Videos Screen///////////////////////////////////
-        Image screenimage = new Image(screen);
-        ImageView screenview = new ImageView(screenimage);
+        HBox videopane = new HBox();
+        videopane.setLayoutX(310);
+        videopane.setLayoutY(80);
+        videopane.setPrefSize(1050, 700);
+        videopane.setId("videopane");
+        videopane.setSpacing(5);
+        //video shadow
+//        videoshadow = new Rectangle(300, 75);
+//        videoshadow.setLayoutX(335);
+//        videoshadow.setLayoutY(230);
+//        videoshadow.setFill(Color.web("#b5b4bb"));
+//        videoshadow.setOpacity(0.2);
+//        videoshadow.setVisible(false);
+        seeresult = new Image(playimage);
+        play = new ImageView(seeresult);
+        play.setLayoutX(335);
+        play.setLayoutY(270);
+        play.setFitHeight(30);
+        play.setFitWidth(30);
+        play.setCursor(Cursor.CLOSED_HAND);
+        //pepsi image
+        Image videoimage = new Image(pepsi);
+        videoview = new ImageView(videoimage);
+        videoview.setLayoutX(335);
+        videoview.setLayoutY(105);
+        videoview.setFitHeight(200);
+        videoview.setFitWidth(300);
+        videoview.setCursor(Cursor.CLOSED_HAND);
+        //videos    
+        Rectangle video1 = new Rectangle();
+        Rectangle video2 = new Rectangle();
+        Rectangle video3 = new Rectangle();
+        viewresults = new Text("Show Result");
+        viewresults.setVisible(false);
+        viewresults.setLayoutX(405);
+        viewresults.setLayoutY(210);
+        viewresults.setId("viewresult");
 
-        screenview.setLayoutX(25);
-        screenview.setLayoutY(90);
-        screenview.setFitHeight(750);
-        screenview.setFitWidth(1300);
+        video1.setWidth(300.0f);
+        video1.setHeight(200.0f);
+        video1.setFill(Color.web("#ffffff"));
+        video1.setStroke(Color.BLACK);
+        video1.setStrokeWidth(5);
 
+        video2.setWidth(300.0f);
+        video2.setHeight(200.0f);
+        video2.setFill(Color.web("#f2ca8c"));
+        video2.setStrokeWidth(5);
+        video2.setStroke(Color.BLACK);
+
+        video3.setWidth(300.0f);
+        video3.setHeight(200.0f);
+        video3.setFill(Color.web("#ceeff2"));
+        video3.setStroke(Color.BLACK);
+        video3.setStrokeWidth(5);
+// Actions
+
+        videoview.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                viewresults.setVisible(true);
+                videoview.setOpacity(0.3);
+                //  seeresultview.setVisible(true);
+
+                // videoshadow.setVisible(true);
+                //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+        videoview.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                videoview.setOpacity(1);
+                viewresults.setVisible(false);
+                //  seeresultview.setVisible(false);
+                //  videoshadow.setVisible(false);
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+        //show result action
+        videoview.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("SHOW RESULTS");
+//   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+        //paly video action
+        play.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("paly video");
+            }
+
+        });
+//end of actions
+
+        video1.setId("videostyle");
+        video2.setId("videostyle");
+        video3.setId("videostyle");
+        videopane.setMargin(video1, new Insets(20, 20, 20, 20));
+        videopane.setMargin(video2, new Insets(20, 20, 20, 20));
+        videopane.setMargin(video3, new Insets(20, 20, 20, 20));
+        videopane.getChildren().addAll(video1);
+        root.getChildren().addAll(videopane, videoview, viewresults, play);
+        /////////////////////////////////////////////////////////
         Scene scene = new Scene(root, 300, 250);
         primaryStage.setTitle("Customer Profile");
         scene.getStylesheets().add(getClass().getResource("navbar.css").toExternalForm());
