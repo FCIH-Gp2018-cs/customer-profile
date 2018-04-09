@@ -5,10 +5,17 @@
  */
 package customer;
 
+import com.sun.javafx.charts.ChartLayoutAnimator;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import javafx.geometry.Insets;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -16,6 +23,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.PerspectiveTransform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,11 +36,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 /**
  *
@@ -45,8 +60,20 @@ public class Customer extends Application {
     public Image seeresult;
     public ImageView play;
     public ImageView videoview;
+    public Circle avatarshadow;
+    public static ImageView profilepicview;
+    public Label changeprofile;
+    public Image profileimage;
+    public Circle profile;
+    public static BufferedImage bufferedImage;
+    public static Image image;
+    public Label username, email, phone, description;
+    public TextField usernametext, emailtext, phonetext;
+    public TextArea descrip;
+    public Button editdata, savedata;
 
     @Override
+
     public void start(Stage primaryStage) throws FileNotFoundException {
         FileInputStream inputstream = new FileInputStream("F:\\gp\\customer\\src\\img\\775497.png");
         FileInputStream logoutstream = new FileInputStream("F:\\gp\\customer\\src\\img\\logout.png");
@@ -60,6 +87,7 @@ public class Customer extends Application {
         FileInputStream detailspic = new FileInputStream("F:\\gp\\customer\\src\\img\\details.png");
         FileInputStream pepsi = new FileInputStream("F:\\gp\\customer\\src\\img\\pepsi.jpg");
         FileInputStream playimage = new FileInputStream("F:\\gp\\customer\\src\\img\\play.png");
+        FileInputStream editdatapic = new FileInputStream("F:\\gp\\customer\\src\\img\\edit.png");
 
         Rectangle rectangle = new Rectangle();
 
@@ -164,7 +192,7 @@ public class Customer extends Application {
         edit.setCursor(Cursor.CLOSED_HAND);
         logoutview.setCursor(Cursor.CLOSED_HAND);
         homeshadow.setVisible(false);
-        root.getChildren().addAll(rectangle, homeshadow, logo1, logo2, imageview, logoline, logoline1, logoutview, aboutview, profileview, homeview);
+        root.getChildren().addAll(rectangle, homeshadow, logo1, logo2, imageview, logoline, logoline1, logoutview, home, contactus, edit);
 
         home.setOnMouseEntered(new EventHandler<MouseEvent>() {
 
@@ -247,16 +275,19 @@ public class Customer extends Application {
         profilebar.setId("profilebar");
         profilebar.setPrefSize(305, 700);
         //profile avatar 
-        Image profileimage = new Image(profilepic);
-        ImageView profilepicview = new ImageView(profileimage);
+
+        profileimage = new Image(profilepic);
+        profilepicview = new ImageView(profileimage);
         profilepicview.setX(80);
         profilepicview.setY(90);
+        profilepicview.setFitHeight(150);
+        profilepicview.setFitWidth(150);
         profilepicview.setId("profilepic");
         //user data
-        Label username = new Label("Company Name");
-        Label email = new Label("Company Email");
-        Label phone = new Label("Company number phone");
-        Label Description = new Label("Company Description");
+        username = new Label("Company Name");
+        email = new Label("Company Email");
+        phone = new Label("Company number phone");
+        description = new Label("Company Description");
         //user data icons
         Image emailimage = new Image(emailpic);
         Image phoneimage = new Image(phonepic);
@@ -267,11 +298,11 @@ public class Customer extends Application {
 
         //icons design
         emailview.setLayoutX(10);
-        emailview.setLayoutY(280);
+        emailview.setLayoutY(400);
         phoneview.setLayoutX(10);
-        phoneview.setLayoutY(310);
+        phoneview.setLayoutY(430);
         detailsview.setLayoutX(10);
-        detailsview.setLayoutY(340);
+        detailsview.setLayoutY(460);
 
         emailview.setFitHeight(20);
         emailview.setFitWidth(30);
@@ -280,22 +311,188 @@ public class Customer extends Application {
         detailsview.setFitHeight(20);
         detailsview.setFitWidth(30);
         //user data designs
-        username.setLayoutX(85);
-        username.setLayoutY(230);
+        username.setLayoutX(90);
+        username.setLayoutY(280);
         email.setLayoutX(50);
-        email.setLayoutY(280);
+        email.setLayoutY(400);
         phone.setLayoutX(50);
-        phone.setLayoutY(310);
-        Description.setLayoutX(50);
-        Description.setLayoutY(340);
+        phone.setLayoutY(430);
+        description.setLayoutX(50);
+        description.setLayoutY(460);
         //username.getText();
         username.setId("username");
         email.setId("username");
         phone.setId("username");
-        Description.setId("username");
+        description.setId("username");
 
-        root.getChildren().addAll(profilebar, profilepicview, username, email, phone, Description, emailview, phoneview, detailsview);
-        /////////////////////////////Videos Screen///////////////////////////////////
+// Edit Profile
+        profile = new Circle(150, 180, 80);
+        profile.setStroke(Color.SEAGREEN);
+        profile.setFill(Color.SNOW);
+        profile.setEffect(new DropShadow(+25d, 0d, +2d, Color.DARKSEAGREEN));
+        //profile pic
+        profile.setFill(new ImagePattern(profileimage));
+        //
+        profile.setCursor(Cursor.CLOSED_HAND);
+
+        //change profile pic action
+        changeprofile = new Label("Change");
+        changeprofile.setId("username");
+        changeprofile.setLayoutX(120);
+        changeprofile.setLayoutY(225);
+        changeprofile.setVisible(false);
+        //edit data icon
+        Image editdataicon = new Image(editdatapic);
+        ImageView editdataview = new ImageView(editdataicon);
+        editdataview.setLayoutX(50);
+        editdataview.setLayoutY(600);
+        editdataview.setFitHeight(50);
+        editdataview.setFitWidth(70);
+        //edit button
+        editdata = new Button("Edit");
+        editdata.setLayoutX(100);
+        editdata.setLayoutY(600);
+        editdata.setPrefSize(100, 50);
+        editdata.setId("editdata");
+        editdata.setCursor(Cursor.CLOSED_HAND);
+        //save button
+        savedata = new Button("Save");
+        savedata.setLayoutX(100);
+        savedata.setLayoutY(600);
+        savedata.setPrefSize(100, 50);
+        savedata.setId("editdata");
+        savedata.setCursor(Cursor.CLOSED_HAND);
+        savedata.setVisible(false);
+        //edit texts
+        usernametext = new TextField(username.getText());
+        emailtext = new TextField(email.getText());
+        phonetext = new TextField(phone.getText());
+        descrip = new TextArea(description.getText());
+        usernametext.setVisible(false);
+        emailtext.setVisible(false);
+        phonetext.setVisible(false);
+        descrip.setVisible(false);
+
+//edit profile actions
+        profile.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                profile.setOpacity(0.5);
+                changeprofile.setVisible(true);
+            }
+
+        });
+        profile.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                profile.setOpacity(1);
+                changeprofile.setVisible(false);
+            }
+
+        });
+        //change profile pic
+        profile.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                FileChooser fileChooser = new FileChooser();
+
+                //Set extension filter
+                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+                fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+                //Show open file dialog
+                File file = fileChooser.showOpenDialog(null);
+                try {
+                    BufferedImage bufferedImage = ImageIO.read(file);
+                    image = SwingFXUtils.toFXImage(bufferedImage, null);
+//                    profilepicview.setImage(image);
+                    profile.setFill(new ImagePattern(image));
+                } catch (IOException ex) {
+                    ex.getMessage();
+                }
+//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+
+//edit data action(username-email-description)
+        editdata.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                //visability
+                username.setVisible(false);
+                email.setVisible(false);
+                description.setVisible(false);
+                phone.setVisible(false);
+                editdata.setVisible(false);
+                usernametext.setVisible(true);
+                emailtext.setVisible(true);
+                phonetext.setVisible(true);
+                descrip.setVisible(true);
+                savedata.setVisible(true);
+                //set texts
+                usernametext.setText(username.getText());
+                emailtext.setText(email.getText());
+                phonetext.setText(phone.getText());
+                descrip.setText(description.getText());
+                //designs
+                usernametext.setLayoutX(90);
+                usernametext.setLayoutY(280);
+                emailtext.setLayoutX(50);
+                emailtext.setLayoutY(400);
+                phonetext.setLayoutX(50);
+                phonetext.setLayoutY(430);
+                descrip.setLayoutX(50);
+                descrip.setLayoutY(460);
+                descrip.setPrefSize(250, 100);
+                descrip.setWrapText(true);
+                savedata.setVisible(true);
+                
+                // root.getChildren().addAll(usernametext, emailtext, phonetext, descrip);
+
+                
+
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        
+//save data button
+        savedata.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent t) {
+                        username.setText(usernametext.getText());
+                        email.setText(emailtext.getText());
+                        phone.setText(phonetext.getText());
+                        description.setText(descrip.getText());
+                        username.setVisible(true);
+                        email.setVisible(true);
+                        description.setVisible(true);
+                        phone.setVisible(true);
+                        editdata.setVisible(true);
+                        usernametext.setVisible(false);
+                        emailtext.setVisible(false);
+                        phonetext.setVisible(false);
+                        descrip.setVisible(false);
+                        savedata.setVisible(false);
+
+//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+
+                });
+        
+        
+        
+        
+        
+        
+        root.getChildren().addAll(profilebar, username, email, phone, description, emailview, phoneview, detailsview, profile, changeprofile, editdata, usernametext, emailtext, phonetext, descrip,savedata);
+//        root.getChildren().addAll(avatarshadow);
+/////////////////////////////Videos Screen///////////////////////////////////
         HBox videopane = new HBox();
         videopane.setLayoutX(310);
         videopane.setLayoutY(80);
@@ -334,8 +531,8 @@ public class Customer extends Application {
         viewresults.setLayoutY(210);
         viewresults.setId("viewresult");
 
-        video1.setWidth(300.0f);
-        video1.setHeight(200.0f);
+        video1.setWidth(310.0f);
+        video1.setHeight(210.0f);
         video1.setFill(Color.web("#ffffff"));
         video1.setStroke(Color.BLACK);
         video1.setStrokeWidth(5);
